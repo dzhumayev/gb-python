@@ -1,9 +1,9 @@
-#Напишите программу, которая принимает на вход цифру, обозначающую день недели, и проверяет, 
-#является ли этот день выходным.
+# Напишите программу, которая принимает на вход цифру, обозначающую день недели, и проверяет,
+# является ли этот день выходным.
 
-inputData = input("Введите день недели: ")
-if inputData.isdigit():
-    dayNumber = (int)(inputData)
+try:
+    dayNumber = int(input("Введите день недели: "))
+
     if dayNumber >= 1 and dayNumber <= 7:
         if dayNumber <= 5:
             print(f"День недели с номером {dayNumber} будний")
@@ -11,5 +11,5 @@ if inputData.isdigit():
             print(f"День недели с номером {dayNumber} выходной")
     else:
         print(f"День недели с номером {dayNumber} не существует")
-else:
+except ValueError:
     print("Введено не числовое значение")
