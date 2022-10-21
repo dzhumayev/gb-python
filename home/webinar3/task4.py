@@ -3,7 +3,6 @@
 #- 3 -> 11
 #- 2 -> 10
 
-import math
 import re
 
 num = int(input("Введите десятичное число: "))
