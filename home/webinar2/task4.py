@@ -2,18 +2,22 @@
 # Найдите произведение элементов на указанных позициях. 
 # Позиции хранятся в файле file.txt в одной строке одно число.
 
-#try:
-#    inpt = input("Введите вещественное число: ")
-#    n = int(inpt)
-#    
-#    multi = 1
-#    listOfMulti = []
-#    for e in range(1, n + 1):
-#        multi *= e
-#        listOfMulti.append(multi)
-#    
-#    print(listOfMulti)
-#
-#except ValueError:
-#    print("Введено не числовое значение")
-#
+def seq(n):
+    return [e for e in range(n * -1, n + 1)]
+multi = 1
+with open("task4.data", "r") as f:
+    numbers = [int(e) for e in f.read().splitlines()]
+    nseq = seq(int(input("Введите n: ")))
+    for i in numbers:
+        multi *= nseq[i]
+print(multi)
+    
+
+
+
+
+
+
+
+
+
