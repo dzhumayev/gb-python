@@ -92,4 +92,7 @@ with open("task5.polynomial1", "r") as f:
 with open("task5.polynomial2", "r") as f:
     polynomial2 = f.readline()
 
+with open("task5.out", "w") as f:
+    f.write(polynomial_sum_line(polynomial1, polynomial2))
+
 print(polynomial_sum_line(polynomial1, polynomial2))
