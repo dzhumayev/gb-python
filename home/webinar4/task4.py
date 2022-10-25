@@ -6,6 +6,7 @@ import random
 
 k = int(input("Введите натуральную степень k: "))
 
+
 def random_polynomial(k):
     coefficients = [random.randint(0, 101) for i in range(k + 1)]
     monomials = []
@@ -21,7 +22,6 @@ def random_polynomial(k):
         monomials.append(f"{coefficients[e]}{x_note}")
 
     return f"{'+'.join(monomials)}=0"
-
 
 
 with open("task4.data", "w") as f:
