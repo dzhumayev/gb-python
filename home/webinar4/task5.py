@@ -5,35 +5,38 @@
 import re
 import string
 
-coef_precondition = r"(?<!\^)"
-number_pattern = r"([+-]?([0-9]*[.])?[0-9]+)"
+re_letter = r"[A-Za-z]"
+re_coef_lookbehind_neg = r"(?<![\^\.\d])"
+re_coef = fr"{re_coef_lookbehind_neg}([+-]?([0-9]*[.])?[0-9]+)"
+
+re_degree_lookahead_neg = r"(?!\^)"
+re_var_simple = fr"({re_letter}){re_degree_lookahead_neg}"
+
+#re_degree_lookahead_pos = r"(?=\^\d+)"
+re_var_in_degree = fr"({re_letter}\^d+)"
+
 
 
 def prepare_polynomial(polynomial: str):
-    polynomial = re.sub(r"\s*", "", polynomial)
-    polynomial = re.sub(r"-", "+-", polynomial)
-    polynomial = re.sub(r"^[+]", "", polynomial)
-    return polynomial
-
+    result = polynomial.replace(" ", "")
+    result = re.sub(r"([+-])", r" \1", result).strip()
+    print(f"prepare_polynomial(polynomial: str): {result}")
+    return result
+prepare_polynomial("7x^3 + y - z  ^ 2")
 
 def prepare_monomial(monomial):
-    re_var = r"([A-Za-z])(?!\^)"
-    re_var_degree = fr"([A-Za-z]\^{number_pattern})"
-    re_start_coef = r"^([-+])?(?=[A-Za-z])"
-
-    pattern_repl = {re_start_coef: r"\g<1>1",
-                    re_var: r" \1 ",
-                    re_var_degree: r" \1 ",
-                    f"{coef_precondition}{number_pattern}": r" \1 "}
-
-    for key in pattern_repl:
-        monomial = re.sub(key, pattern_repl.get(key), monomial)
-
-    return re.sub(r"\s+", " ", monomial).strip()
+    repl = r"\g<1>"
+    result = re.sub(fr"^([+-])?(?={re_letter})", fr"{repl}1 ", monomial)
+    result = re.sub(fr"{re_coef}", fr" {repl} ", result)
+    result = re.sub(fr"{re_var_simple}", fr" {repl} ", result)
+    result = re.sub(fr"{re_var_in_degree}", fr" {repl} ", result)
+    print(f"prepare_monomial(monomial): {result}")
+    return result
+prepare_monomial("+z^223q")
 
 
 def prepare_monomial_only_vars(monomial):
-    return re.sub(coef_precondition + number_pattern, "", prepare_monomial(monomial)).strip()
+    return re.sub(re_coef_lookbehind_neg + re_coef, "", prepare_monomial(monomial)).strip()
 
 
 def monomials_similar(monomial1: str, monomial2: str):
@@ -48,7 +51,7 @@ def monomials_similar(monomial1: str, monomial2: str):
     return True
 
 def extract_coef(monomial: str):
-    return sum([float(tuple(e)[0]) for e in re.findall(fr"{coef_precondition}{number_pattern}", monomial)])
+    return sum([float(tuple(e)[0]) for e in re.findall(fr"{re_coef_lookbehind_neg}{re_coef}", monomial)])
 
 
 def polynomial_sum_line(polynomial1: str, polynomial2: str):
@@ -80,11 +83,11 @@ def polynomial_sum_line(polynomial1: str, polynomial2: str):
     return monomials_sum
 
 
-with open("task5.polynomial1", "r") as f:
-    polynomial1 = f.read()
-with open("task5.polynomial2", "r") as f:
-    polynomial2 = f.read()
-
-
-print(polynomial_sum_line(polynomial1, polynomial2))
-print(polynomial_sum_line("7x^3 + y + z^2", "5x^3 - 3z^2 + 4z^3"))
+#with open("task5.polynomial1", "r") as f:
+#    polynomial1 = f.read()
+#with open("task5.polynomial2", "r") as f:
+#    polynomial2 = f.read()
+#
+#
+#print(polynomial_sum_line(polynomial1, polynomial2))
+#print(polynomial_sum_line("7x^3 + y + z^2", "5x^3 - 3z^2 + 4z^3"))
