@@ -15,16 +15,15 @@ re_var_simple = fr"({re_letter}){re_degree_lookahead_neg}"
 re_var_in_degree = fr"({re_letter}\^d+)"
 
 
-def prepare_polynomial(polynomial: str):
+def split_polynomial(polynomial: str):
     result = polynomial.replace(" ", "")
-    result = re.sub(r"([+-])", r" \1", result).strip()
-    result = re.sub(r"([+])", r"", result).strip()
-    return result
+    result = re.sub(r"([+-])", r" \1", result)
+    result = re.sub(r"([+])", r"", result)
+    return result.strip().split(" ")
 
 
 def minimize_spaces(s: str):
     return re.sub(r"\s+", fr" ", s).strip()
-
 
 def set_default_coef(monomial: str):
     repl = r"\g<1>"
@@ -32,8 +31,7 @@ def set_default_coef(monomial: str):
     result = re.sub(fr"{re_coef}", fr" {repl} ", result)
     result = re.sub(fr"{re_var_simple}", fr" {repl} ", result)
     result = re.sub(fr"{re_var_in_degree}", fr" {repl} ", result)
-    result = minimize_spaces(result)
-    return result.strip()
+    return minimize_spaces(result).strip()
 
 
 def remove_coefs(monomial: str):
@@ -61,8 +59,8 @@ def monomials_similar(monomial1: str, monomial2: str):
 def polynomial_sum_line(polynomial1: str, polynomial2: str):
     result = []
 
-    monomials1 = prepare_polynomial(polynomial1).split(" ")
-    monomials2 = prepare_polynomial(polynomial2).split(" ")
+    monomials1 = split_polynomial(polynomial1)
+    monomials2 = split_polynomial(polynomial2)
     added_flag = False
 
     for e1 in monomials1:
@@ -74,7 +72,7 @@ def polynomial_sum_line(polynomial1: str, polynomial2: str):
                     monomials2.pop(i)
                     break
                 result.append("+" if coefs_sum > 0 else "")
-                result.append(f"{coefs_sum}{remove_coefs(e1)}")
+                result.append(f"{coefs_sum}{remove_coefs(e1)}".replace(" ", ""))
                 monomials2.pop(i)
                 added_flag = True
                 break
@@ -90,6 +88,7 @@ def polynomial_sum_line(polynomial1: str, polynomial2: str):
 
 with open("task5.polynomial1", "r") as f:
     polynomial1 = f.readline()
+
 with open("task5.polynomial2", "r") as f:
     polynomial2 = f.readline()
 
