@@ -16,9 +16,10 @@ def rle_compress(text: str):
         position = match.start(1)
         slice = text[slice_since:position]
         result.append(slice)
+        symbol = match.group(1)
         length = match.end(0) - match.start(0)
-        result.append(f"{escape}{length}")
-        slice_since = position + length - 1
+        result.append(f"{escape}{length}{symbol}")
+        slice_since = position + length
         pass
 
     return "".join(result) + text[slice_since:]
