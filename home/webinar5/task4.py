@@ -50,8 +50,7 @@ def rle_decompress(text: str):
     result = "".join(result) + text[slice_since:]
     return re.sub(fr"({anchor})({escape})", anchor, result)
 
-# with open("task4.input", encoding="utf-8") as f:
-#    text = f.readline()
-#
-# with open("task4.output", "w", encoding="utf-8") as f:
-#    f.write(remove_abv_words(text))
+with open("task4.input", encoding="utf-8") as f:
+   text = f.readline()
+with open("task4.output", "w", encoding="utf-8") as f:
+   f.write(rle_compress(text))
