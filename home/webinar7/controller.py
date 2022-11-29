@@ -1,17 +1,18 @@
-def choose_data_format():
-    prompt = """Выберите формат документа
-    1 - csv
-    2 - json
-    3 - xml
-    => """
+from data_import import *
+from dict_tools import *
 
-    fmt = input(prompt)
-    if fmt == "1":
-        return "csv"
-    elif fmt == "2":
-        return "json"
-    elif fmt == "3":
-        return "xml"
-    else:
-        return None
 
+def temp():
+    filepath = "data/data.csv"  # input("Введите путь к файлу: ")
+    data_list = import_data(filepath)
+    for number, element in enumerate(data_list, 1):
+        dictionary = dict(element)
+        print_dict(dictionary, number)
+        change_flag = True if input("Изменить данные: y - ДА, иначе НЕТ => ") == "y" else False
+        if change_flag:
+            edit_dict(dictionary)
+
+
+
+
+temp()
