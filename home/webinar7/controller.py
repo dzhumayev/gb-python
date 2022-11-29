@@ -2,17 +2,37 @@ from data_import import *
 from dict_tools import *
 
 
+def choose_save_mode():
+    prompt = """Выберите действие
+    1 - Сохранить
+    2 - Сохранить как"""
+
+    while True:
+        save_mode = input(prompt)
+        if save_mode == "1":
+            return "save"
+        elif save_mode == "2":
+            return "save_as"
+        else:
+            print("Ошибка выбора режима. Попробуйте ещё раз")
+            continue
+
+
 def temp():
     filepath = "data/data.csv"  # input("Введите путь к файлу: ")
-    data_list = import_data(filepath)
-    for number, element in enumerate(data_list, 1):
-        dictionary = dict(element)
-        print_dict(dictionary, number)
-        change_flag = True if input("Изменить данные: y - ДА, иначе НЕТ => ") == "y" else False
+    dictionary_list = [dict(e) for e in import_data(filepath)]
+
+    change_flag = False
+    change_prompt = "Изменить данные: y - ДА, иначе НЕТ => "
+
+    for number, dictionary in enumerate(dictionary_list, 1):
+        print_dictionary(dictionary, number)
+        change_flag = True if change_flag or input(change_prompt) == "y" else False
         if change_flag:
-            edit_dict(dictionary)
+            edit_dictionary(dictionary)
 
-
+    if change_flag:
+        choose_save_mode()
 
 
 temp()
