@@ -1,4 +1,5 @@
 from data_import import *
+from data_export import *
 from dict_tools import *
 
 
@@ -20,19 +21,28 @@ def choose_save_mode():
 
 def temp():
     filepath = "data/data.csv"  # input("Введите путь к файлу: ")
-    dictionary_list = [dict(e) for e in import_data(filepath)]
 
-    change_flag = False
-    change_prompt = "Изменить данные: y - ДА, иначе НЕТ => "
+    try:
+        dictionary_list = [dict(e) for e in import_data(filepath)]
 
-    for number, dictionary in enumerate(dictionary_list, 1):
-        print_dictionary(dictionary, number)
-        change_flag = True if change_flag or input(change_prompt) == "y" else False
+        change_flag = False
+        change_prompt = "Изменить данные: y - ДА, иначе НЕТ => "
+
+        for number, dictionary in enumerate(dictionary_list, 1):
+            print_dictionary(dictionary, number)
+            change_flag = True if change_flag or input(change_prompt) == "y" else False
+            if change_flag:
+                edit_dictionary(dictionary)
+
         if change_flag:
-            edit_dictionary(dictionary)
-
-    if change_flag:
-        choose_save_mode()
+            if choose_save_mode() == "save":
+                filepath = "data/tempf"
+                export_data(dictionary_list, filepath)
+            else:
+                filepath = "data/tempf.csv"
+                export_data(dictionary_list, filepath)
+    except ValueError:
+        print("Ошибка. Невозможно импортировать файл")
 
 
 temp()
