@@ -1,0 +1,14 @@
+<users>
+    <user>
+        <firstname>Иван</firstname>
+        <lastname>Сидоров</lastname>
+        <thirdname>Петрович</thirdname>
+        <phone>79234567890</phone>
+    </user>
+    <user>
+        <firstname>Сергей</firstname>
+        <lastname>Петров</lastname>
+        <thirdname>Иванович</thirdname>
+        <phone>79236540987</phone>
+    </user>
+</users>
