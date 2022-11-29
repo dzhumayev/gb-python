@@ -1,4 +1,5 @@
 from text_converter import *
+import json
 
 
 
@@ -17,7 +18,7 @@ def export_csv(list_of_dicts, filepath: str):
 
 def export_json(list_of_dicts, filepath: str):
     with open(filepath, "w", encoding="utf-8") as f:
-        f.write(list_of_dicts)
+        json.dump(list_of_dicts, f)
 
 def export_other(list_of_dicts, filepath: str):
     with open(filepath, "w", encoding="utf-8") as f:

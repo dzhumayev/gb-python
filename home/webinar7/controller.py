@@ -6,7 +6,8 @@ from dict_tools import *
 def choose_save_mode():
     prompt = """Выберите действие
     1 - Сохранить
-    2 - Сохранить как"""
+    2 - Сохранить как
+    => """
 
     while True:
         save_mode = input(prompt)
@@ -19,8 +20,8 @@ def choose_save_mode():
             continue
 
 
-def temp():
-    filepath = "data/data.csv"  # input("Введите путь к файлу: ")
+def run():
+    filepath = input("Введите путь к файлу: ")
 
     try:
         dictionary_list = [dict(e) for e in import_data(filepath)]
@@ -36,13 +37,9 @@ def temp():
 
         if change_flag:
             if choose_save_mode() == "save":
-                filepath = "data/tempf"
                 export_data(dictionary_list, filepath)
             else:
-                filepath = "data/tempf.csv"
+                filepath = input("Введите путь для сохранения: ")
                 export_data(dictionary_list, filepath)
     except ValueError:
         print("Ошибка. Невозможно импортировать файл")
-
-
-temp()
